@@ -1,0 +1,155 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Dec 9, 2021
+    Author     : Admin
+*/
+
+body{
+    font-size: 13px;
+}
+
+.h-80{
+    min-height: 50vh !important;
+}
+
+
+.header,
+.footer{
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+}
+
+.header{
+    background-image: url('../image/front-2columns.jpg');
+    height: 300px;  
+
+}
+
+#my-notify{
+    position: absolute;
+    top: 0;
+    width: 600px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    height: 150px;
+    border: 2px solid;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: 20px;
+    display: flex;
+    
+    transform-origin: top;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    animation: dropdown .3s;
+}
+
+.overlay{
+    position: absolute;
+    top: 0;
+    bottom: -226%;
+    left: 0;
+    right: 0;
+    z-index: 110;
+}
+@keyframes dropdown{
+    from{
+        transform: scaleY(0%);
+    }
+    to{
+        transform: scaleY(100%);
+    }
+}
+
+.msg-fail{
+    background-color: #ffdede;
+    border-color: #a33535;
+    color: #c22929;
+}
+
+.msg-success{
+    background-color: #d2f2d3;
+    border-color: #227725;
+    color: #53bd56;
+}
+.footer{
+    background-image: url('../image/footerbg.jpg');
+    height: 200px;
+}
+
+.left{
+    font-size: 1rem
+}
+
+.bg-lightgray{
+    background-color: #E8E8E8 !important;
+}
+
+.my-container{
+    position: absolute;
+    top: 280px;
+    left: 0;
+    right: 0;
+}
+
+.main-content{
+    position: absolute;
+    top: -90px;
+    min-height: 100%;
+    width: 95%;
+    left: 30px;
+    right: 0;
+    z-index: 100;
+    margin: 0 auto;
+}
+
+.main-content > h3{
+    font-family: serif;
+}
+
+.text-darkprimary{
+    color: #0085C8;
+}
+
+.main-content  th,
+.main-content  td{
+    font-size: 1.1rem;
+}
+
+thead td{
+    box-shadow: inset 5px -10px 20px #e3e3e3;
+}
+
+.outline-0{
+    outline: 0 !important;
+}
+
+.shadow-0{
+    box-shadow: none !important;
+}
+
+tbody tr{
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+}
+tbody tr:hover{
+    background-color: #eaeaea;
+}
+
+.shadow-inset-top{
+    box-shadow: inset 0 3px 4px lightgray !important;
+}
+
+input[type="radio"] {
+    -ms-transform: scale(1.4); /* IE 9 */
+    -webkit-transform: scale(1.4); /* Chrome, Safari, Opera */
+    transform: scale(1.4);
+}
