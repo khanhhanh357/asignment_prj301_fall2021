@@ -4,7 +4,7 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
 /* 
-    Created on : Dec 9, 2021
+    Created on : Dec 10, 2021, 5:24:22 PM
     Author     : Admin
 */
 
@@ -25,7 +25,7 @@ body{
 }
 
 .header{
-    background-image: url('../image/front-2columns.jpg');
+    background-image: url('../file/front-2columns.jpg');
     height: 300px;  
 
 }
@@ -43,7 +43,7 @@ body{
     border-bottom-right-radius: 8px;
     padding: 20px;
     display: flex;
-    
+
     transform-origin: top;
     flex-direction: column;
     justify-content: center;
@@ -81,7 +81,7 @@ body{
     color: #53bd56;
 }
 .footer{
-    background-image: url('../image/footerbg.jpg');
+    background-image: url('../file/footerbg-2columns.jpg');
     height: 200px;
 }
 
@@ -102,7 +102,7 @@ body{
 
 .main-content{
     position: absolute;
-    top: -90px;
+    top: -100px;
     min-height: 100%;
     width: 95%;
     left: 30px;
@@ -122,10 +122,6 @@ body{
 .main-content  th,
 .main-content  td{
     font-size: 1.1rem;
-}
-
-thead td{
-    box-shadow: inset 5px -10px 20px #e3e3e3;
 }
 
 .outline-0{
@@ -152,4 +148,79 @@ input[type="radio"] {
     -ms-transform: scale(1.4); /* IE 9 */
     -webkit-transform: scale(1.4); /* Chrome, Safari, Opera */
     transform: scale(1.4);
+}
+
+.text-primary-dark{
+    color: #00539C !important;
+}
+
+.cursor-context-menu{
+    cursor: context-menu !important;
+}
+
+
+.table-scroll{
+    display: block;
+    empty-cells: show;
+    border-spacing: 0;
+    border: 1px solid lightgray;
+}
+
+.table-scroll thead{
+    background-color: #f9f9f9;  
+    box-shadow: inset 0 -5px 15px lightgray;
+    position:relative;
+    display: block;
+    width:100%;
+    overflow-y: hidden;
+    padding-right: 6px;
+}
+
+.table-scroll tbody{
+    display: block; position:relative;
+    width:100%;
+    overflow-x: hidden;
+    overflow-y:scroll;
+    border-top: 1px solid rgba(0,0,0,0.2);
+}
+
+.table-scroll tr{
+    width: 100%;
+    display:flex;
+}
+
+.table-scroll td,
+.table-scroll th{
+    flex-basis:100%;
+    flex-grow:2;
+    display: block;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    text-align:left;
+    border-left: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+}
+
+.table-scroll tbody td{
+    padding-left: 1%;
+    padding-right: 1%;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+tbody::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+tbody::-webkit-scrollbar{
+    width: 6px;
+    background-color: #F5F5F5;
+}
+tbody::-webkit-scrollbar-thumb{ 
+    background-color: #a2a2a2;
+}
+
+.overflow-hidden{
+    overflow-x: hidden;
 }

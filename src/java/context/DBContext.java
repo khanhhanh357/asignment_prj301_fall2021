@@ -1,5 +1,13 @@
-
-package dal;
+/*
+ * Copyright(C) 2021, FPT University.
+ * J3.L.P0010:
+ * Student Request System
+ *
+ * Record of change:
+ * DATE            Version             AUTHOR               DESCRIPTION
+ * 2021-12-10      1.0                 Admin                First Implement
+ */
+package context;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -113,7 +121,7 @@ public class DBContext {
      * @throws Exception is a <code>java.sql.SQLException</code> object
      * @return address of file images. Is a <code>java.lang.String</code> object
      */
-    public String getImagePath() throws Exception {
-        return "images/";
-    }
+//    public String getImagePath() throws Exception {
+//        return "images/";
+//    }
 }

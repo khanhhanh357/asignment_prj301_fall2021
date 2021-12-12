@@ -11,31 +11,14 @@ package model;
  */
 public class Account {
 
-    private int id;
     private String userName;
     private String password;
-    private String firstName;
-    private String lastName;
-    private String phone;
+    private String displayName;
 
-    public Account() {
-    }
-
-    public Account(int id, String userName, String password, String firstName, String lastName, String phone) {
-        this.id = id;
+    public Account(String userName, String password, String displayName) {
         this.userName = userName;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.displayName = displayName;
     }
 
     public String getUserName() {
@@ -54,28 +37,12 @@ public class Account {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
 }

@@ -12,10 +12,9 @@ package controller;
 import dao.StoreManagerDAO;
 import java.io.IOException;
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,8 +25,24 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Admin
  */
-@WebServlet(name = "HomeController", urlPatterns = {"/home"})
-public class HomeController extends HttpServlet {
+@WebServlet(name = "ViewRequestController", urlPatterns = {"/view"})
+public class ViewOrderController extends HttpServlet {
+
+    
+    /*convert string into java.sql.Date*/
+    private Date parseToDate(String str) {
+        try {
+            if (str == null) {
+                str = "";
+            }
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date utilDate = simpleDateFormat.parse(str);
+            Date date = new java.sql.Date(utilDate.getTime());
+            return date;
+        } catch (ParseException e) {
+            return null;
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -48,12 +63,13 @@ public class HomeController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            request.getRequestDispatcher("home.jsp").forward(request, response);
+            request.getRequestDispatcher("view.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("msg", ex.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
+
 
     /**
      * Returns a short description of the servlet.

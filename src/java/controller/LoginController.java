@@ -1,16 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright(C) 2021, FPT University.
+ * J3.L.P0010:
+ * Student Request System
+ *
+ * Record of change:
+ * DATE            Version             AUTHOR               DESCRIPTION
+ * 2021-12-10      1.0                 Admin                First Implement
  */
 package controller;
 
-import dao.LoginDAO;
+import dao.StoreManagerDAO;
 import model.Account;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,24 +27,42 @@ public class LoginController extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param request is a <code>javax.servlet.http.HttpServletRequest</code>
+     * object
+     * @param response is a <code>javax.servlet.http.HttpServletResponse</code>
+     * object
+     *
+     * @throws ServletException if a servlet-specific error occurs It is a
+     * <code>javax.servlet.ServletException</code> object
+     *
+     * @throws IOException if an I/O error occurs It is a
+     * <code>java.io.IOException</code> object
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String logoutRequest = request.getParameter("logout");
+        //if logoutRequest is not null
+        if (logoutRequest != null) {
+            //then remove all object on the session
+            request.getSession().invalidate();
+        }
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @param request is a <code>javax.servlet.http.HttpServletRequest</code>
+     * object
+     * @param response is a <code>javax.servlet.http.HttpServletResponse</code>
+     * object
+     *
+     * @throws ServletException if a servlet-specific error occurs It is a
+     * <code>javax.servlet.ServletException</code> object
+     *
+     * @throws IOException if an I/O error occurs It is a
+     * <code>java.io.IOException</code> object
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -51,21 +70,18 @@ public class LoginController extends HttpServlet {
         try {
             String userName = request.getParameter("name");
             String password = request.getParameter("password");
-            String msg = "";
-            boolean loginState = false;
-            LoginDAO loginDAO = new LoginDAO();
-            Account acc = loginDAO.getAccount(userName, password);
+            StoreManagerDAO studentRequestDAO = new StoreManagerDAO();
+            //get account by user name and password
+            Account acc = studentRequestDAO.getAccount(userName, password);
+            //if account with the entered username and password exists
             if (acc != null && userName.trim().equals(acc.getUserName().trim())
                     && password.trim().equals(acc.getPassword().trim())) {
-                msg = "Login Success!";
-                loginState = true;
-            } else {
-                msg = "Login failed!";
-            }
+                request.getSession().setAttribute("name", acc.getDisplayName());
+                response.sendRedirect(request.getContextPath() +"/home");
+                return;
+            } 
             request.setAttribute("name", userName);
-            request.setAttribute("password", password);
-            request.setAttribute("loginState", loginState);
-            request.setAttribute("msg", msg);
+            request.setAttribute("msg", "*Login failed!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         } catch (Exception ex) {
             request.setAttribute("msg", ex.getMessage());

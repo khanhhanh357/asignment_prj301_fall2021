@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/J3_L_P0064">
 <Environment name="serverName" type="java.lang.String" value="localhost"/>
-  <Environment name="dbName" type="java.lang.String" value="OrderManagement"/>
+  <Environment name="dbName" type="java.lang.String" value="Asignment_gio"/>
   <Environment name="portNumber" type="java.lang.String" value="1433"/>
   <Environment name="userName" type="java.lang.String" value="sa"/>
   <Environment name="password" type="java.lang.String" value="123"/>
-  <Environment name="image" type="java.lang.String" value="images/"/>
 </Context>
