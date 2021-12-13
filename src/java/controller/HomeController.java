@@ -1,26 +1,15 @@
-/*
- * Copyright(C) 2021, FPT University.
- * J3.L.P0010:
- * Student Request System
- *
- * Record of change:
- * DATE            Version             AUTHOR               DESCRIPTION
- * 2021-12-10      1.0                 Admin                First Implement
- */
+
 package controller;
 
 import dao.StoreManagerDAO;
 import java.io.IOException;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.CustomerOrder;
 
 /**
  *
@@ -48,7 +37,25 @@ public class HomeController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            request.getRequestDispatcher("home.jsp").forward(request, response);
+            if (request.getSession().getAttribute("name") != null) {
+                String customer = request.getParameter("customer");
+                if (customer == null) {
+                    customer = "";
+                }
+                int month = 0;
+                String monthVal = request.getParameter("month");
+                if (monthVal != null) {
+                    month = Integer.parseInt(monthVal);
+                }
+                StoreManagerDAO smdao = new StoreManagerDAO();
+                List<CustomerOrder> listOrder = smdao.getOrders(customer, month);
+                request.setAttribute("listOrder", listOrder);
+                request.setAttribute("month", month);
+                request.setAttribute("customer", customer);
+                request.getRequestDispatcher("home.jsp").forward(request, response);
+            } else {
+                response.sendRedirect(request.getContextPath() + "/login");
+            }
         } catch (Exception ex) {
             request.setAttribute("msg", ex.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);

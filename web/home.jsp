@@ -4,6 +4,9 @@
     Author     : Admin
 --%>
 
+<%@page import="java.time.LocalDateTime"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="javax.ejb.Local"%>
 <%@page import="dao.StoreManagerDAO"%>
 <%@page import="java.sql.Date"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -18,6 +21,10 @@
         <link rel="stylesheet" href="css/myStyle.css" type="text/css">
     </head>
     <body>
+        <%  java.text.DateFormat dmf = new java.text.SimpleDateFormat("MM-yyy");
+            java.text.DateFormat mf = new java.text.SimpleDateFormat("MM");
+            java.text.DateFormat dfmt = new java.text.SimpleDateFormat("dd/MM/yyyy");
+        %>
         <div class="container-fluid px-0 position-relative">
             <div class="header"></div>
             <div class="my-container">
@@ -32,50 +39,37 @@
                                 <thead>
                                     <tr >
                                         <td scope="col" 
-                                            colspan="6" 
+                                            colspan="4" 
                                             class="text-center bg-light pt-3 pb-4"
                                             style="box-shadow: inset 0 -115px 20px #e6e6e6">
-                                            <form action="view" method="GET">
+                                            <form action="home" method="GET">
                                                 <div class="form-group row">
-                                                    <label for="department" 
+                                                    <label for="orderDate" 
                                                            class="font-weight-bold offset-md-2 col-md-4">
                                                         Select date
                                                     </label>
-                                                    <select name="department" 
-                                                            id="department" 
+                                                    <select name="month" 
+                                                            id="orderDate" 
                                                             class="col-md-4 py-0" 
                                                             style="height: 35px;"
                                                             >
-                                                        <option value="" 
-                                                                disabled="true" 
-                                                                <c:if test="${0 eq 0}">
-                                                                    selected="true"
-                                                                </c:if>
-                                                                >
-                                                            -- All
-                                                        </option>
-                                                        <!--<c:forEach items="${departments}" var="d">
-                                                            <option value="${d.id}"
-                                                                    <c:if test="${departmentId eq d.id}">
-                                                                        selected="true"
-                                                                    </c:if>
-                                                                    >
-                                                                ${d.departmentName}
-                                                            </option>
-                                                        </c:forEach>-->
+                                                        <option value="0" <c:if test="${month eq 0}">selected="true"</c:if>> <%= dmf.format(new java.util.Date())%></option>
+                                                        <option value="1" <c:if test="${month eq 1}">selected="true"</c:if>> <%= dmf.format(Date.valueOf(LocalDateTime.now().minusMonths(1).toLocalDate()))%></option>
+                                                        <option value="2" <c:if test="${month eq 2}">selected="true"</c:if>> <%= dmf.format(Date.valueOf(LocalDateTime.now().minusMonths(2).toLocalDate()))%></option>
+                                                        <option value="-1" <c:if test="${month eq -1}">selected="true"</c:if>> -- All</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group row mt-3">
-                                                    <label for="inputTitle" 
+                                                    <label for="customer" 
                                                            class=" col-sm-5 mt-1 col-form-label text-right py-0 font-weight-bold">
                                                         or Enter Customer name
                                                     </label>
                                                     <div class="col-sm-5 pt-1">
                                                         <input type="text" 
                                                                class="form-control py-0 px-1 rounded-0 border border-dark shadow-0" 
-                                                               id="inputTitle" 
-                                                               name="title"
-                                                               value=""
+                                                               id="customer" 
+                                                               name="customer"
+                                                               value="${customer}"
                                                                maxlength="200"
                                                                placeholder="CustomerName">
                                                     </div>
@@ -107,73 +101,37 @@
                                     </tr>
                                 </thead>
                                 <tbody style="max-height: 46vh">
-                                    <c:if test="${requests.isEmpty()}">
+                                    <c:if test="${listOrder.isEmpty()}">
                                         <tr class="cursor-context-menu">
-                                            <td colspan="6" 
+                                            <td colspan="4" 
                                                 class="text-muted font-weight-bold font-italic text-center">
                                                 No result 
-                                                <c:if test="${departmentId ne 0}">
-                                                    in <c:forEach items="${departments}" var="d">
-                                                        <c:if test="${departmentId eq d.id}">
-                                                            ${d.departmentName}
-                                                        </c:if>
-                                                    </c:forEach>
-                                                </c:if>
-                                                <c:if test="${departmentId ne null}">
-                                                    with the title ${title}
-                                                </c:if>
                                             </td>
                                         </tr>
                                     </c:if>
-                                    <c:if test="${!requests.isEmpty()}">
-                                        <c:forEach items="${requests}" var="r">
+                                    <c:if test="${!listOrder.isEmpty()}">
+                                        <c:forEach items="${listOrder}" var="l">
                                             <tr>
-                                                <td style="flex-basis:24%;">
+                                                <td style="flex-basis:10%;">
                                                     <p class="d-flex h-100 align-items-center justify-content-center text-success text-center">
-                                                        ${r.title}
+                                                        ${l.id}
                                                     </p>
                                                 </td>
-                                                <td style="flex-basis:17%;">
+                                                <td style="flex-basis:40%;">
                                                     <p class="d-flex h-100 align-items-center justify-content-center text-center">
-                                                        <c:set var="date" value="${r.date}"/>
-                                                        <%= df.format((Date) pageContext.getAttribute("date"))%>
+                                                        ${l.lastName} ${l.firstName}
                                                     </p>
                                                 </td>
-                                                <td style="flex-basis:17%;">
+                                                <td style="flex-basis:30%;">
                                                     <p class="d-flex h-100 align-items-center justify-content-center text-center">
-                                                        <c:if test="${r.closeDate ne null}">
-                                                            <c:set var="date" value="${r.closeDate}"/>
-                                                            <%= df.format((Date) pageContext.getAttribute("date"))%>
-                                                        </c:if>
-                                                        <c:if test="${r.closeDate eq null}">
-                                                            N/A
-                                                        </c:if>
+                                                        <c:set var="date" value="${l.orderDate}"/>
+                                                        <%= dfmt.format((Date) pageContext.getAttribute("date"))%>
                                                     </p>
                                                 </td>
-                                                <td style="flex-basis:13%;">
-                                                    <p class="d-flex h-100 align-items-center justify-content-center text-center
-                                                       <c:if test="${r.status eq -1}">text-danger</c:if>
-                                                       <c:if test="${r.status eq 1}">text-success</c:if>
-                                                           ">
-                                                       <c:if test="${r.status eq -1}">Rejected</c:if>
-                                                       <c:if test="${r.status eq 0}">in progress</c:if>
-                                                       <c:if test="${r.status eq 1}">Approved</c:if>
-                                                       </p>
-                                                    </td>
-                                                    <td style="flex-basis:20%;">
-                                                        <p class="d-flex h-100 align-items-center  justify-content-center text-center">
-                                                        <c:set var="did" value="${r.departmentId}"/>
-                                                        <%
-                                                            int id = (Integer) pageContext.getAttribute("did");
-//                                                            Department department = studentRequestDAO.getDepartmentById(id);
-                                                        %>
-                                                        <%--<%=department.getDepartmentName()%>--%>
-                                                    </p>
-                                                </td>
-                                                <td style="flex-basis:9%;">
-                                                    <a href="<%=request.getContextPath()%>/solve?id=${r.id}" 
+                                                <td style="flex-basis:20%;">
+                                                    <a href="<%=request.getContextPath()%>/view?id=${l.id}" 
                                                        class="text-dark font-weight-bold d-flex h-100 align-items-center justify-content-center text-center">
-                                                        Solve
+                                                        View
                                                     </a>
                                                 </td>
                                             </tr>

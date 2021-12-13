@@ -1,25 +1,14 @@
-/*
- * Copyright(C) 2021, FPT University.
- * J3.L.P0010:
- * Student Request System
- *
- * Record of change:
- * DATE            Version             AUTHOR               DESCRIPTION
- * 2021-12-10      1.0                 Admin                First Implement
- */
 package controller;
 
 import dao.StoreManagerDAO;
 import java.io.IOException;
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.CustomerOrder;
+import model.Product;
 
 /**
  *
@@ -29,20 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ViewOrderController extends HttpServlet {
 
     
-    /*convert string into java.sql.Date*/
-    private Date parseToDate(String str) {
-        try {
-            if (str == null) {
-                str = "";
-            }
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            java.util.Date utilDate = simpleDateFormat.parse(str);
-            Date date = new java.sql.Date(utilDate.getTime());
-            return date;
-        } catch (ParseException e) {
-            return null;
-        }
-    }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -62,8 +38,20 @@ public class ViewOrderController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            request.getRequestDispatcher("view.jsp").forward(request, response);
+         try {
+            if (request.getSession().getAttribute("name") != null) {
+                int id = Integer.parseInt(request.getParameter("id"));
+                StoreManagerDAO smdao = new StoreManagerDAO();
+                CustomerOrder customerOrder = smdao.getOrderById(id);
+                Product product = smdao.getProductById(customerOrder.getProductId());
+                System.out.println(customerOrder.getFirstName());
+                request.setAttribute("order", customerOrder);
+                request.setAttribute("product", product);
+                request.setAttribute("total", customerOrder.getQuantity() * product.getPrice());
+                request.getRequestDispatcher("view.jsp").forward(request, response);
+            } else {
+                response.sendRedirect(request.getContextPath() + "/login");
+            }
         } catch (Exception ex) {
             request.setAttribute("msg", ex.getMessage());
             request.getRequestDispatcher("error.jsp").forward(request, response);

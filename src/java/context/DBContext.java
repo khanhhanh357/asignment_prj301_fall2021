@@ -1,12 +1,4 @@
-/*
- * Copyright(C) 2021, FPT University.
- * J3.L.P0010:
- * Student Request System
- *
- * Record of change:
- * DATE            Version             AUTHOR               DESCRIPTION
- * 2021-12-10      1.0                 Admin                First Implement
- */
+
 package context;
 
 import java.sql.Connection;

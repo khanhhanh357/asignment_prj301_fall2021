@@ -25,8 +25,8 @@
                     </div>
                     <div class="col-8 col-md-8 col-xl-8 position-relative">
                         <div class="main-content d-flex flex-column ml-5">
-                            <h3 class="text-darkprimary float-left">Order ID: </h3>
-                            <form action="solve" method="POST">
+                            <h3 class="text-darkprimary float-left">Add Order</h3>
+                            <form action="add" method="POST">
                                 <div class="form-group row mt-3">
                                     <label for="date-create" 
                                            class="col-sm-4 col-form-label text-right py-0">
@@ -41,16 +41,33 @@
                                     </div>
                                 </div>
                                 <div class="form-group row mt-3">
-                                    <label for="customer" 
+                                    <label for="firstName" 
                                            class="col-sm-4 col-form-label text-right py-0">
-                                        Customer
+                                        FirstName
                                     </label>
                                     <div class="col-sm-5">
                                         <input type="text" 
                                                class="form-control py-0 px-1 border border-secondary shadow-inset-top bg-white" 
-                                               id="student-id"
-                                               placeholder="customer"
-                                               value="">
+                                               id="firstName"
+                                               placeholder="First Name"
+                                               value=""
+                                               name="firstName"
+                                               required="">
+                                    </div>
+                                </div>
+                                <div class="form-group row mt-3">
+                                    <label for="lastName" 
+                                           class="col-sm-4 col-form-label text-right py-0">
+                                        Last Name
+                                    </label>
+                                    <div class="col-sm-5">
+                                        <input type="text" 
+                                               class="form-control py-0 px-1 border border-secondary shadow-inset-top bg-white" 
+                                               id="lastName"
+                                               placeholder="Last Name"
+                                               value=""
+                                               name="lastName"
+                                               required="">
                                     </div>
                                 </div>
                                 <div class="form-group row mt-3">
@@ -59,33 +76,26 @@
                                         Product
                                     </label>
                                     <div class="col-sm-5">
-                                        <select name="product" 
-                                                id="product" 
+                                        <select id="product" 
                                                 class=" py-0 form-control py-0 px-1 border border-secondary shadow-inset-top bg-white" 
                                                 style="height: 35px"
                                                 >
-                                            <option value="" 
-                                                    disabled="true">
-                                                -- All
-                                            </option>
-
-                                            <option value="1"
-                                                    selected="true">
-                                                Giof
-                                            </option>
+                                            <c:forEach items="${listProducts}" var="l" varStatus="loop">
+                                                <option value="${loop.index}" data-id ="${l.id}" data-price="${l.price}" >${l.name}</option>
+                                            </c:forEach>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group row mt-3">
                                     <label for="price" 
                                            class="col-sm-4 col-form-label text-right py-0">
-                                        Price/Unit
+                                        Price/Unit (VNĐ)
                                     </label>
                                     <div class="col-sm-5">
                                         <input type="text" 
                                                class="form-control py-0 px-1 border border-secondary shadow-inset-top bg-white" 
                                                id="price" 
-                                               value="1"
+                                               value="0"
                                                readonly="true"
                                                >
                                     </div>
@@ -98,15 +108,17 @@
                                     <div class="col-sm-5">
                                         <input type="number" 
                                                class="form-control py-0 px-1 border border-secondary shadow-inset-top bg-white" 
-                                               id="date-created" 
+                                               id="quantity" 
                                                value="1"
+                                               name="quantity"
+                                               onchange="updateTotal()"
                                                >
                                     </div>
                                 </div>
                                 <div class="form-group row mt-3">
                                     <label for="total" 
                                            class="col-sm-4 col-form-label text-right py-0">
-                                        Total
+                                        Total (VNĐ)
                                     </label>
                                     <div class="col-sm-5">
                                         <input type="text" 
@@ -117,6 +129,7 @@
                                                >
                                     </div>
                                 </div>
+                                <input id="productId" type="hidden" name="product" value="${listProducts.get(0).id}">
                                 <div class="form-group mt-3 row">
                                     <button type="submit" 
                                             class="btn offset-sm-6 col-sm-2 py-1 border-secondary outline-0 bg-lightgray">
@@ -130,5 +143,24 @@
                 <div class="footer"></div>
             </div>
         </div>
+        <script>
+            document.getElementById("product").addEventListener('change', function () {
+                let option = document.getElementsByTagName('option')[document.getElementById("product").value];
+                let price = option.getAttribute('data-price');
+                let pId = option.getAttribute("data-id")
+                document.getElementById("price").value = price;
+                updateTotal(price);
+                document.getElementById("productId").value = pId;
+            });
+
+            function updateTotal() {
+                let price = document.getElementById("price").value;
+                let quantity = document.getElementById("quantity").value;
+                document.getElementById("total").value = parseInt(quantity) * parseInt(price);
+            }
+
+            document.getElementById("price").value = document.getElementsByTagName('option')[0].getAttribute('data-price');
+            updateTotal(document.getElementById("price").value);
+        </script>
     </body>
 </html>
